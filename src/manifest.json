@@ -2,6 +2,7 @@
     "name": "My Shitty PWA",
     "short_name": "ShittyPWA",
     "start_url": ".",
+    "scope": ".",
     "display": "standalone",
     "background_color": "#fff",
     "description": "An example PWA project",
