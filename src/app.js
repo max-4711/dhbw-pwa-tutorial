@@ -120,3 +120,22 @@ pasteButton.addEventListener('click', async () => {
     console.error(err.name, err.message);
   }
 });
+
+let shareButton = document.getElementById('share');
+shareButton.addEventListener('click', async() => {
+  const blob = await toBlob(canvas);
+  const file = new File([blob], 'shittypwa-scribble.png', { type: "image/png" });
+  const filesArray = [file];
+
+  if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+    navigator.share({
+      files: filesArray,
+      title: 'Scribble',
+      text: 'MyShitty PWA scribble',
+    })
+    .then(() => console.log('Share was successful.'))
+    .catch((error) => console.log('Sharing failed', error));
+  } else {
+    console.log(`Your system doesn't support sharing files.`);
+  }
+});
