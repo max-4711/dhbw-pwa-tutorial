@@ -1,0 +1,13 @@
+{
+    "name": "My Shitty PWA",
+    "short_name": "ShittyPWA",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "An example PWA project",
+    "icons": [{
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }]
+  }
