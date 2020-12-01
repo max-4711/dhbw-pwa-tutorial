@@ -36,8 +36,38 @@ txtColor.addEventListener('change', () => {
   ctx.fillStyle = txtColor.value;
 });
 
-document.querySelectorAll('button').forEach((button) =>
-  button.addEventListener('click', (e) => {
+let clearButton = document.getElementById('clear');
+clearButton.addEventListener('click', (e) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  })
-);
+});
+
+
+let fileHandle;
+let openButton = document.getElementById('open');
+openButton.addEventListener('click', async () => {
+  [fileHandle] = await window.showOpenFilePicker();
+  const file = await fileHandle.getFile();
+  const image = await getImage(file);
+  ctx.drawImage(image, 0, 0);
+});
+
+let saveButton = document.getElementById('save');
+saveButton.addEventListener('click', async () => {
+
+  const options = {
+    types: [
+      {
+        description: 'PNG Images',
+        accept: {
+          'image/png': ['.png'],
+        },
+      },
+    ],
+  };
+
+  const fileHandle = await window.showSaveFilePicker(options);
+  const writable = await fileHandle.createWritable();
+  const contents = await toBlob(canvas);
+  await writable.write(contents);
+  await writable.close();
+});
