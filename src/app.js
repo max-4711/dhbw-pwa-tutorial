@@ -90,3 +90,33 @@ saveButton.addEventListener('click', async () => {
     //TODO: Fallback für IE11-Gesindel
   }
 });
+
+let copyButton = document.getElementById('copy');
+copyButton.addEventListener('click', async () => {
+  try {
+      const blob = await toBlob(canvas);
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          [blob.type]: blob
+        })
+      ]);
+  } catch (err) {
+    console.error(err.name, err.message);
+  }
+});
+
+let pasteButton = document.getElementById('paste');
+pasteButton.addEventListener('click', async () => {
+  try {
+    const clipboardItems = await navigator.clipboard.read();
+    for (const clipboardItem of clipboardItems) {
+      for (const type of clipboardItem.types) {
+        const blob = await clipboardItem.getType(type);
+        const image = await getImage(blob);
+        ctx.drawImage(image, 0, 0);
+      }
+    }
+  } catch (err) {
+    console.error(err.name, err.message);
+  }
+});
