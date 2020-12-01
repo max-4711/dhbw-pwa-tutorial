@@ -31,6 +31,14 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
         const url = event.request.url;
+
+        const fetchedResponse = await fetch(url);        
+        if (fetchedResponse)
+        {
+            console.log(`From network: ${url}.`);
+            return fetchedResponse;
+        }
+
         const cache = await caches.open(cacheName);
         const cachedResponse = await cache.match(url);
         
@@ -39,6 +47,6 @@ self.addEventListener('fetch', (event) => {
             return cachedResponse;
         }
         console.log(`From network: ${url}.`);
-        return fetch(url);
+        return null;
     })());
 });
