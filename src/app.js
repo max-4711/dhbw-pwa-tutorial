@@ -42,32 +42,51 @@ clearButton.addEventListener('click', (e) => {
 });
 
 
-let fileHandle;
+
 let openButton = document.getElementById('open');
 openButton.addEventListener('click', async () => {
-  [fileHandle] = await window.showOpenFilePicker();
-  const file = await fileHandle.getFile();
-  const image = await getImage(file);
-  ctx.drawImage(image, 0, 0);
+  
+
+  if ('showOpenFilePicker' in window)
+  {
+    let fileHandle;
+    [fileHandle] = await window.showOpenFilePicker();
+    const file = await fileHandle.getFile();
+    const image = await getImage(file);
+    ctx.drawImage(image, 0, 0);
+  }
+  else
+  {
+    alert('Besorg dir halt nen ordentlichen Browser, Trottel!');
+    //TODO: Fallback für IE11-Gesindel
+  }
 });
 
 let saveButton = document.getElementById('save');
 saveButton.addEventListener('click', async () => {
-
-  const options = {
-    types: [
-      {
-        description: 'PNG Images',
-        accept: {
-          'image/png': ['.png'],
+  //TODO: Fallback für IE11-Gesindel
+  if ('showSaveFilePicker' in window)
+  {
+    const options = {
+      types: [
+        {
+          description: 'PNG Images',
+          accept: {
+            'image/png': ['.png'],
+          },
         },
-      },
-    ],
-  };
-
-  const fileHandle = await window.showSaveFilePicker(options);
-  const writable = await fileHandle.createWritable();
-  const contents = await toBlob(canvas);
-  await writable.write(contents);
-  await writable.close();
+      ],
+    };
+  
+    const fileHandle = await window.showSaveFilePicker(options);
+    const writable = await fileHandle.createWritable();
+    const contents = await toBlob(canvas);
+    await writable.write(contents);
+    await writable.close();
+  }
+  else
+  {
+    alert('Besorg dir halt nen ordentlichen Browser, Trottel!');
+    //TODO: Fallback für IE11-Gesindel
+  }
 });
