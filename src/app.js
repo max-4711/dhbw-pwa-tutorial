@@ -38,6 +38,6 @@ txtColor.addEventListener('change', () => {
 
 document.querySelectorAll('button').forEach((button) =>
   button.addEventListener('click', (e) => {
-    alert(`Implement the "${e.target.textContent}" feature!`);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   })
 );
